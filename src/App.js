@@ -41,7 +41,6 @@ class App extends Component {
         signAndEncrypt: encrypt,
         decryptAndVerify: decrypt
     })
-    window.crdt = crdt
 
     this._data = crdt.create('treedoc-text', props.crdtName)
     window.data = this._data
@@ -51,7 +50,7 @@ class App extends Component {
 
   componentDidMount() {
     this._data.network.start().then(() => {
-      window.binding = new TextareaBinding(this._data, this._textarea)
+      new TextareaBinding(this._data, this._textarea)
       this.setMarkdown()
       this._interval = setInterval(this.setMarkdown, 500)
     })

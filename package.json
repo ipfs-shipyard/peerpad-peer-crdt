@@ -1,16 +1,21 @@
 {
   "name": "peerpad-peer-crdt",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
+    "ipfs": "^0.29.3",
+    "peer-crdt": "^0.8.2",
+    "peer-crdt-ipfs": "^0.4.0",
+    "peer-crdt-pad": "ipfs-shipyard/peer-crdt-textarea-binding",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "showdown": "^1.8.6"
   },
+  "private": true,
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom"
   }
 }

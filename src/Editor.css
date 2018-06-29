@@ -1,23 +1,10 @@
-.Editor .input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-}
+.Editor {
 
-.Editor .output {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
 }
 
 .Editor .input-area {
+  height: 80vh;
   padding: 0;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
+  border: 1px solid #000;
 }

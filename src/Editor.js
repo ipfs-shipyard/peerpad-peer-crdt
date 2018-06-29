@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Flex, Box } from 'grid-styled'
+import XIPFS from 'ipfs'
+import PeerCRDT from 'peer-crdt'
+import PeerCRDTIPFS from 'peer-crdt-ipfs'
+import encrypt from 'peer-crdt/test/helpers/encrypt'
+import decrypt from 'peer-crdt/test/helpers/decrypt'
+import Showdown from 'showdown'
+import TextareaBinding from 'peer-crdt-pad'
 import './Editor.css';
-
-const XIPFS = require('ipfs')
-const PeerCRDT = require('peer-crdt')
-const PeerCRDTIPFS = require('peer-crdt-ipfs')
-const encrypt = require('peer-crdt/test/helpers/encrypt')
-const decrypt = require('peer-crdt/test/helpers/decrypt')
-const Showdown = require('showdown')
-const TextareaBinding = require('peer-crdt-pad')
 
 class Editor extends Component {
   static defaultProps = {
@@ -68,12 +68,14 @@ class Editor extends Component {
 
   render() {
     return (
-      <div className="Editor">
-        <div className="input">
+      <Flex className='Editor'>
+        <Box flex='1 1 auto'>
           <textarea ref={(c) => this._textarea = c} className="input-area" />
-        </div>
-        <div className="output" dangerouslySetInnerHTML={{ __html: this.state.output }} />
-      </div>
+        </Box>
+        <Box flex='1 1 auto'>
+          <div dangerouslySetInnerHTML={{ __html: this.state.output }} />
+        </Box>
+      </Flex>
     );
   }
 }

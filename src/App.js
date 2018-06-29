@@ -53,8 +53,12 @@ class App extends Component {
     this._data.network.start().then(() => {
       window.binding = new TextareaBinding(this._data, this._textarea)
       this.setMarkdown()
-      setTimeout(this.setMarkdown, 500)
+      this._interval = setInterval(this.setMarkdown, 500)
     })
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._interval)
   }
 
   setMarkdown = () => {

@@ -1,4 +1,4 @@
-.App .input {
+.Editor .input {
   position: absolute;
   top: 0;
   left: 0;
@@ -6,7 +6,7 @@
   height: 100%;
 }
 
-.App .output {
+.Editor .output {
   position: absolute;
   top: 0;
   right: 0;
@@ -14,7 +14,7 @@
   height: 100%;
 }
 
-.App .input-area {
+.Editor .input-area {
   padding: 0;
   top: 0;
   left: 0;

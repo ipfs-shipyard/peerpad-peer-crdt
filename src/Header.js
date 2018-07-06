@@ -5,12 +5,11 @@ class Header extends Component {
   render() {
     return (
       <Flex flexWrap='wrap' alignItems='center'>
-        <Box width={[1, 2/3, null, 1/2 ]}>
+        <Box>
           PeerPad
         </Box>
         <Box
           ml='auto'
-          width={160}
           flex='none'
         >
           <button>+</button>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Editor.css';
+import OAEP from './oaep';
 
 const XIPFS = require('ipfs')
 const PeerCRDT = require('peer-crdt')

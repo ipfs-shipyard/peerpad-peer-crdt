@@ -50,8 +50,7 @@ class Editor extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.match.params.key !== nextProps.match.params.key) {
       this.start({
-        key: nextProps.match.params.key,
-        clear: true
+        key: nextProps.match.params.key
       })
     }
   }
@@ -63,8 +62,8 @@ class Editor extends Component {
     return true
   }
 
-  start = ({ key, clear }) => {
-    this.stop({ clear })
+  start = ({ key }) => {
+    this.stop()
     this._data = this._crdt.create('treedoc-text', key)
     window.data = this._data
     this._converter = new Showdown.Converter()
@@ -76,22 +75,22 @@ class Editor extends Component {
     })
   }
 
-  stop = ({ clear = false } = {}) => {
+  stop = () => {
     clearInterval(this._interval)
-    if (this._textarea) this._textarea.value = ''
-    if (clear) this.setState({ output: '' })
-    if (this._binding) this._binding.halt()
+    if (this.binding) {
+      this._binding.halt()
+      this._textarea.value = ''
+      this.setState({ output: '' })
+    }
   }
 
   setMarkdown = () => {
-    console.log('set md', this._textarea.value)
     this.setState({
       output: this._textarea.value
     })
   }
 
   render() {
-    console.log(this.state)
     return (
       <Flex className='Editor'>
         <Box flex='1 1 auto' p={2}>

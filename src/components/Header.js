@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Flex, Box } from 'grid-styled'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 
 const getKey = async () => new Promise((resolve) => {
   let text = "";
@@ -23,7 +23,7 @@ class Header extends Component {
     return (
       <Flex flexWrap='wrap' alignItems='center' p={4}>
         <Box>
-          PeerPad
+          <Link to='/'>PeerPad</Link>
         </Box>
         <Box
           ml='auto'

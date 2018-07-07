@@ -12,3 +12,5 @@ body {
 #root {
   height: 100vh;
 }
+
+p { margin: 0; }

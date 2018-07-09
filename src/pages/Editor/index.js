@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { Flex, Box } from 'grid-styled'
-import XIPFS from 'ipfs'
-import PeerCRDT from 'peer-crdt'
-import PeerCRDTIPFS from 'peer-crdt-ipfs'
-import encrypt from 'peer-crdt/test/helpers/encrypt'
-import decrypt from 'peer-crdt/test/helpers/decrypt'
-import TextareaBinding from 'peer-crdt-pad'
-import Render from '../../components/Render'
-import shallowEqual from '../../lib/simpleShallowEqual'
+import React, { Component } from 'react';
+import { Flex, Box } from 'grid-styled';
+import XIPFS from 'ipfs';
+import PeerCRDT from 'peer-crdt';
+import PeerCRDTIPFS from 'peer-crdt-ipfs';
+import Crypto from '../../lib/crypto';
+import TextareaBinding from 'peer-crdt-pad';
+import Render from '../../components/Render';
+import shallowEqual from '../../lib/simpleShallowEqual';
+import OAEP from '../../lib/oaep';
 import './index.css';
 
 class Editor extends Component {
@@ -32,11 +32,14 @@ class Editor extends Component {
     })
 
     const crdtipfs = PeerCRDTIPFS(ipfs)
+    const writeKey = props.match.params.writeKey;
+    const readKey = props.match.params.readKey;
+    this.crypto = new Crypto(readKey, writeKey);
 
     this._crdt = PeerCRDT.defaults({
         ...crdtipfs,
-        signAndEncrypt: encrypt,
-        decryptAndVerify: decrypt
+        signAndEncrypt: this.crypto.encrypt.bind(this.crypto),
+        decryptAndVerify: this.crypto.decrypt.bind(this.crypto)
     })
 
     this.start(this.props.match.params)

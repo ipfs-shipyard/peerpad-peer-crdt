@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { Flex, Box } from 'grid-styled';
 import { withRouter, Link } from 'react-router-dom';
-import OAEP from '../oaep';
+import OAEP from '../lib/oaep';
 
 const getKey = async () => {
 
-  const pair = await OAEP.genKey();
-  return `${pair.privateKey}.${pair.publicKey}`;
+  return await OAEP.genKey();
 };
 
 class Header extends Component {
   createNew = async (e) => {
     e.preventDefault()
-    const key = await getKey()
-    this.props.history.push(`/editor/${key}`)
+    const { privateKey, publicKey } = await getKey()
+    this.props.history.push(`/editor/${privateKey}/${publicKey}`)
   }
 
   render() {

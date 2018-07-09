@@ -5,8 +5,9 @@ import PeerCRDT from 'peer-crdt'
 import PeerCRDTIPFS from 'peer-crdt-ipfs'
 import encrypt from 'peer-crdt/test/helpers/encrypt'
 import decrypt from 'peer-crdt/test/helpers/decrypt'
-import Showdown from 'showdown'
 import TextareaBinding from 'peer-crdt-pad'
+import Render from '../../components/Render'
+import shallowEqual from '../../lib/simpleShallowEqual'
 import './index.css';
 
 class Editor extends Component {
@@ -38,9 +39,7 @@ class Editor extends Component {
         decryptAndVerify: decrypt
     })
 
-    this.start({
-      key: this.props.match.params.key
-    })
+    this.start(this.props.match.params)
   }
 
   componentWillUnmount() {
@@ -48,10 +47,8 @@ class Editor extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.key !== nextProps.match.params.key) {
-      this.start({
-        key: nextProps.match.params.key
-      })
+    if (!shallowEqual(this.props.match.params, nextProps.match.params)) {
+      this.start(nextProps.match.params)
     }
   }
 
@@ -62,11 +59,10 @@ class Editor extends Component {
     return true
   }
 
-  start = ({ key }) => {
+  start = ({ readKey, writeKey }) => {
     this.stop()
-    this._data = this._crdt.create('treedoc-text', key)
+    this._data = this._crdt.create('treedoc-text', readKey)
     window.data = this._data
-    this._converter = new Showdown.Converter()
 
     this._data.network.start().then(() => {
       this._binding = new TextareaBinding(this._data, this._textarea)
@@ -91,18 +87,19 @@ class Editor extends Component {
   }
 
   render() {
+    const { writeKey } = this.props.match.params
     return (
       <Flex className='Editor'>
-        <Box flex='1 1 auto' p={2}>
+        <Box flex='1 1 auto' p={2} style={{ display: writeKey ? 'block' : 'none' }}>
           <textarea
             ref={(c) => this._textarea = c}
             className="input-area"
           />
         </Box>
         <Box flex='1 1 auto' p={2}>
-          <div dangerouslySetInnerHTML={{
-            __html: this._converter.makeHtml(this.state.output)
-          }} />
+          <Render>
+            {this.state.output}
+          </Render>
         </Box>
       </Flex>
     );

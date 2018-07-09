@@ -15,8 +15,8 @@ class App extends Component {
           </Box>
           <Box px={2} width={1}>
             <Route exact path="/" component={Home} />
-            <Route path="/editor/:readKey/:writeKey" component={Editor} />
-            <Route path="/readonly/:readKey" component={Editor} />
+            <Route path="/editor/:uuid/:readKey/:writeKey" component={Editor} />
+            <Route path="/readonly/:uuid/:readKey" component={Editor} />
           </Box>
         </Flex>
       </Router>

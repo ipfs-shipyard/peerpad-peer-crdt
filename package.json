@@ -11,10 +11,12 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-emotion": "^9.2.4",
+    "react-overlays": "^0.8.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "showdown": "^1.8.6",
-    "styled-components": "^3.3.3"
+    "styled-components": "^3.3.3",
+    "uuid": "^3.3.2"
   },
   "private": true,
   "scripts": {

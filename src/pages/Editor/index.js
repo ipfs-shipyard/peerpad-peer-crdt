@@ -7,6 +7,7 @@ import encrypt from 'peer-crdt/test/helpers/encrypt'
 import decrypt from 'peer-crdt/test/helpers/decrypt'
 import TextareaBinding from 'peer-crdt-pad'
 import Render from '../../components/Render'
+import PadInfo from '../../components/PadInfo'
 import shallowEqual from '../../lib/simpleShallowEqual'
 import './index.css';
 
@@ -39,7 +40,7 @@ class Editor extends Component {
         decryptAndVerify: decrypt
     })
 
-    this.start(this.props.match.params)
+    this.start(props.match.params)
   }
 
   componentWillUnmount() {
@@ -59,9 +60,9 @@ class Editor extends Component {
     return true
   }
 
-  start = ({ readKey, writeKey }) => {
+  start = ({ uuid }) => {
     this.stop()
-    this._data = this._crdt.create('treedoc-text', readKey)
+    this._data = this._crdt.create('treedoc-text', uuid)
     window.data = this._data
 
     this._data.network.start().then(() => {
@@ -87,21 +88,29 @@ class Editor extends Component {
   }
 
   render() {
-    const { writeKey } = this.props.match.params
+    const { params }= this.props.match
+    const { writeKey } = params
     return (
-      <Flex className='Editor'>
-        <Box flex='1 1 auto' p={2} style={{ display: writeKey ? 'block' : 'none' }}>
-          <textarea
-            ref={(c) => this._textarea = c}
-            className="input-area"
-          />
-        </Box>
-        <Box flex='1 1 auto' p={2}>
-          <Render>
-            {this.state.output}
-          </Render>
-        </Box>
-      </Flex>
+      <div>
+        <Flex>
+          <Box width={50} ml='auto'>
+            <PadInfo {...params} />
+          </Box>
+        </Flex>
+        <Flex className='Editor'>
+          <Box flex='1 1 auto' p={2} style={{ display: writeKey ? 'block' : 'none' }}>
+            <textarea
+              ref={(c) => this._textarea = c}
+              className="input-area"
+            />
+          </Box>
+          <Box flex='1 1 auto' p={2}>
+            <Render>
+              {this.state.output}
+            </Render>
+          </Box>
+        </Flex>
+      </div>
     );
   }
 }

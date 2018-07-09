@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Flex, Box } from 'grid-styled'
-import { withRouter, Link } from 'react-router-dom'
+import { Flex, Box } from 'grid-styled';
+import { withRouter, Link } from 'react-router-dom';
+import OAEP from '../oaep';
 
-const getKey = async () => new Promise((resolve) => {
-  let text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const getKey = async () => {
 
-  for (var i = 0; i < 5; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  resolve(text)
-})
+  const pair = await OAEP.genKey();
+  return `${pair.privateKey}.${pair.publicKey}`;
+};
 
 class Header extends Component {
   createNew = async (e) => {

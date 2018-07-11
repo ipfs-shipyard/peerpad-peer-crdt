@@ -83,9 +83,9 @@ class PadInfo extends Component {
   render(){
     return (
       <div style={{ position: 'relative' }}>
-        <button ref={(c) => this._target = c} onClick={this.toggle}>
+        <div ref={(c) => this._target = c} onClick={this.toggle}>
           {this.props.target}
-        </button>
+        </div>
 
         <Overlay
           show={this.state.show}

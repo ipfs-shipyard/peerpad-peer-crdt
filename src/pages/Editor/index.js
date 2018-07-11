@@ -2,21 +2,34 @@ import React, { Component } from 'react';
 import { Flex, Box } from 'grid-styled';
 import XIPFS from 'ipfs';
 import PeerCRDT from 'peer-crdt';
+import { Input, Textarea, Container } from 'rebass'
 import PeerCRDTIPFS from 'peer-crdt-ipfs';
 import Crypto from '../../lib/crypto';
 import TextareaBinding from 'peer-crdt-pad';
 import Render from '../../components/Render';
 import PadInfo from '../../components/PadInfo';
 import shallowEqual from '../../lib/simpleShallowEqual';
-import OAEP from '../../lib/oaep';
-import './index.css';
 
 class Editor extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      output: ''
+      output: '',
+      peers: [
+        {
+          id: 1,
+          avatar: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&q=75',
+          confirmed: true,
+          username: 'Test'
+        },
+        {
+          id: 2,
+          avatar: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=200&q=75',
+          confirmed: false,
+          username: 'Test2'
+        }
+      ]
     }
 
     const ipfs = new XIPFS({
@@ -94,17 +107,20 @@ class Editor extends Component {
     const { params }= this.props.match
     const { writeKey } = params
     return (
-      <div>
-        <Flex>
-          <Box width={50} ml='auto'>
-            <PadInfo {...params} />
+      <Container>
+        <Flex px={2} pt={4}>
+          <Box flex='1 1 auto' mr={4}>
+            <Input defaultValue='Pad Title' />
+          </Box>
+          <Box ml='auto'>
+            <PadInfo {...params} peers={this.state.peers} />
           </Box>
         </Flex>
         <Flex className='Editor'>
           <Box flex='1 1 auto' p={2} style={{ display: writeKey ? 'block' : 'none' }}>
-            <textarea
+            <Textarea
               ref={(c) => this._textarea = c}
-              className="input-area"
+              style={{ height: '80vh' }}
             />
           </Box>
           <Box flex='1 1 auto' p={2}>
@@ -113,7 +129,7 @@ class Editor extends Component {
             </Render>
           </Box>
         </Flex>
-      </div>
+      </Container>
     );
   }
 }

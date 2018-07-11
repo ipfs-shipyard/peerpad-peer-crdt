@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Flex, Box } from 'grid-styled';
 import { withRouter, Link } from 'react-router-dom';
 import OAEP from '../lib/oaep';
+import { Toolbar, NavLink } from 'rebass'
 import uuidv4 from 'uuid/v4'
 
 const getKey = async () => {
@@ -21,17 +21,14 @@ class Header extends Component {
 
   render() {
     return (
-      <Flex flexWrap='wrap' alignItems='center' p={4}>
-        <Box>
-          <Link to='/'>PeerPad</Link>
-        </Box>
-        <Box
-          ml='auto'
-          flex='none'
-        >
-          <button onClick={this.createNew}>+</button>
-        </Box>
-      </Flex>
+      <Toolbar>
+        <NavLink is={Link} to='/'>
+          PeerPad
+        </NavLink>
+        <NavLink ml='auto' onClick={this.createNew}>
+          Create Pad
+        </NavLink>
+      </Toolbar>
     );
   }
 }

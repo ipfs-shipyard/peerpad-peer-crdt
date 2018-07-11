@@ -13,4 +13,6 @@ body {
   height: 100vh;
 }
 
-p { margin: 0; }
+p {
+  margin: 0;
+}

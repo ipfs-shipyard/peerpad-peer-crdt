@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Flex, Box } from 'grid-styled';
-import XIPFS from 'ipfs';
-import PeerCRDT from 'peer-crdt';
+import React, { Component } from 'react'
+import { Flex, Box } from 'grid-styled'
+import XIPFS from 'ipfs'
+import PeerCRDT from 'peer-crdt'
 import { Input, Textarea, Container } from 'rebass'
-import PeerCRDTIPFS from 'peer-crdt-ipfs';
-import Crypto from '../../lib/crypto';
-import TextareaBinding from 'peer-crdt-pad';
-import Render from '../../components/Render';
-import PadInfo from '../../components/PadInfo';
-import shallowEqual from '../../lib/simpleShallowEqual';
+import PeerCRDTIPFS from 'peer-crdt-ipfs'
+import Crypto from '../../lib/crypto'
+import TextareaBinding from 'peer-crdt-pad'
+import Render from '../../components/Render'
+import PadInfo from '../../components/PadInfo'
+import shallowEqual from '../../lib/simpleShallowEqual'
 
 class Editor extends Component {
   constructor(props) {
@@ -19,13 +19,15 @@ class Editor extends Component {
       peers: [
         {
           id: 1,
-          avatar: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&q=75',
+          avatar:
+            'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&q=75',
           confirmed: true,
           username: 'Test'
         },
         {
           id: 2,
-          avatar: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=200&q=75',
+          avatar:
+            'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=200&q=75',
           confirmed: false,
           username: 'Test2'
         }
@@ -35,25 +37,24 @@ class Editor extends Component {
     const ipfs = new XIPFS({
       EXPERIMENTAL: {
         pubsub: true
-      }, config:  {
+      },
+      config: {
         Addresses: {
-          Swarm: [
-            '/dns4/protocol.andyet.net/tcp/9090/ws/p2p-websocket-star'
-          ]
+          Swarm: ['/dns4/protocol.andyet.net/tcp/9090/ws/p2p-websocket-star']
         },
         Bootstrap: []
       }
     })
 
     const crdtipfs = PeerCRDTIPFS(ipfs)
-    const writeKey = props.match.params.writeKey;
-    const readKey = props.match.params.readKey;
-    this.crypto = new Crypto(readKey, writeKey);
+    const writeKey = props.match.params.writeKey
+    const readKey = props.match.params.readKey
+    this.crypto = new Crypto(readKey, writeKey)
 
     this._crdt = PeerCRDT.defaults({
-        ...crdtipfs,
-        signAndEncrypt: this.crypto.encrypt.bind(this.crypto),
-        decryptAndVerify: this.crypto.decrypt.bind(this.crypto)
+      ...crdtipfs,
+      signAndEncrypt: this.crypto.encrypt.bind(this.crypto),
+      decryptAndVerify: this.crypto.decrypt.bind(this.crypto)
     })
 
     this.start(props.match.params)
@@ -63,7 +64,7 @@ class Editor extends Component {
     this.stop()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!shallowEqual(this.props.match.params, nextProps.match.params)) {
       this.start(nextProps.match.params)
     }
@@ -104,34 +105,36 @@ class Editor extends Component {
   }
 
   render() {
-    const { params }= this.props.match
+    const { params } = this.props.match
     const { writeKey } = params
     return (
       <Container>
         <Flex px={2} pt={4}>
-          <Box flex='1 1 auto' mr={4}>
-            <Input defaultValue='Pad Title' />
+          <Box flex="1 1 auto" mr={4}>
+            <Input defaultValue="Pad Title" />
           </Box>
-          <Box ml='auto'>
+          <Box ml="auto">
             <PadInfo {...params} peers={this.state.peers} />
           </Box>
         </Flex>
-        <Flex className='Editor'>
-          <Box flex='1 1 auto' p={2} style={{ display: writeKey ? 'block' : 'none' }}>
+        <Flex className="Editor">
+          <Box
+            flex="1 1 auto"
+            p={2}
+            style={{ display: writeKey ? 'block' : 'none' }}
+          >
             <Textarea
-              ref={(c) => this._textarea = c}
+              ref={(c) => (this._textarea = c)}
               style={{ height: '80vh' }}
             />
           </Box>
-          <Box flex='1 1 auto' p={2}>
-            <Render>
-              {this.state.output}
-            </Render>
+          <Box flex="1 1 auto" p={2}>
+            <Render>{this.state.output}</Render>
           </Box>
         </Flex>
       </Container>
-    );
+    )
   }
 }
 
-export default Editor;
+export default Editor

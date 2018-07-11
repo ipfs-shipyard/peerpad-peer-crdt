@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Showdown from 'showdown'
 
 class Render extends Component {
@@ -9,11 +9,13 @@ class Render extends Component {
 
   render() {
     return (
-      <div dangerouslySetInnerHTML={{
-        __html: this._converter.makeHtml(this.props.children)
-      }} />
-    );
+      <div
+        dangerouslySetInnerHTML={{
+          __html: this._converter.makeHtml(this.props.children)
+        }}
+      />
+    )
   }
 }
 
-export default Render;
+export default Render

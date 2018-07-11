@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Tooltip from './Tooltip'
 
 class CopyRoom extends Component {
-  copy (input) {
+  copy(input) {
     input.select()
 
     try {
       document.execCommand('copy')
       input.blur()
     } catch (err) {
-      console.error('Failed to exec copy command', err)
       window.alert('Please press Ctrl/Cmd+C to copy')
     }
   }
 
-  render(){
+  render() {
     const { readKey, writeKey, uuid } = this.props
     return (
       <Tooltip
@@ -24,33 +23,47 @@ class CopyRoom extends Component {
         }}
       >
         <div style={{ width: 200 }}>
-          {readKey &&
+          {readKey && (
             <div>
-              <label>Read only link</label>
-              <input
-                value={`${window.location.origin}/readonly/${uuid}/${readKey}`}
-                readOnly
-                ref={(c) => this._readKeyInput = c}
-              />
-              <button onClick={() => this.copy(this._readKeyInput)}>Copy</button>
+              <label htmlFor="readKeyInput">
+                Read only link{' '}
+                <input
+                  id="readKeyInput"
+                  value={`${
+                    window.location.origin
+                  }/readonly/${uuid}/${readKey}`}
+                  readOnly
+                  ref={(c) => (this._readKeyInput = c)}
+                />
+              </label>
+
+              <button onClick={() => this.copy(this._readKeyInput)}>
+                Copy
+              </button>
             </div>
-          }
-          {writeKey &&
+          )}
+          {writeKey && (
             <div>
-              <label>Writeable link</label>
-              <input
-                value={`${window.location.origin}/editor/${uuid}/${readKey}/${writeKey}`}
-                readOnly
-                ref={(c) => this._writeKeyInput = c}
-              />
-              <button onClick={() => this.copy(this._writeKeyInput)}>Copy</button>
+              <label htmlFor="writeKeyInput">
+                Writeable link
+                <input
+                  id="writeKeyInput"
+                  value={`${
+                    window.location.origin
+                  }/editor/${uuid}/${readKey}/${writeKey}`}
+                  readOnly
+                  ref={(c) => (this._writeKeyInput = c)}
+                />
+              </label>
+              <button onClick={() => this.copy(this._writeKeyInput)}>
+                Copy
+              </button>
             </div>
-          }
+          )}
         </div>
       </Tooltip>
-    );
+    )
   }
 }
 
 export default CopyRoom
-

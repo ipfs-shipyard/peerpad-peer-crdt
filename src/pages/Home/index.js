@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Heading, Container, Border } from 'rebass'
-import OAEP from '../../lib/oaep';
+import OAEP from '../../lib/oaep'
 import uuidv4 from 'uuid/v4'
 
 const testDocuments = async (count) => {
-  const documents = [...Array(count)]
   const res = []
 
-  for (const doc of documents) {
+  // eslint-disable-next-line no-unused-vars
+  for (const doc of [...Array(count)]) {
     res.push({
       uuid: uuidv4(),
       ...(await OAEP.genKey())
@@ -35,14 +35,16 @@ class Home extends Component {
     return (
       <Container mt={4}>
         <Heading>Recent Pads</Heading>
-          {this.state.documents.map((d) => (
-            <Border key={d.uuid} p={2} mt={2}>
-              <Link to={`/editor/${d.uuid}/${d.privateKey}/${d.publicKey}`}>{d.uuid}</Link>
-            </Border>
-          ))}
+        {this.state.documents.map((d) => (
+          <Border key={d.uuid} p={2} mt={2}>
+            <Link to={`/editor/${d.uuid}/${d.privateKey}/${d.publicKey}`}>
+              {d.uuid}
+            </Link>
+          </Border>
+        ))}
       </Container>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home

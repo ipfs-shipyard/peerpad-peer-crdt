@@ -3,6 +3,7 @@ import { withRouter, Link } from 'react-router-dom'
 import OAEP from '../lib/oaep'
 import { Toolbar, NavLink } from 'rebass'
 import uuidv4 from 'uuid/v4'
+import Login from './Login'
 
 const getKey = async () => {
   return {
@@ -27,6 +28,7 @@ class Header extends Component {
         <NavLink ml="auto" onClick={this.createNew}>
           Create Pad
         </NavLink>
+        <Login peerId={this.props.peerId} />
       </Toolbar>
     )
   }

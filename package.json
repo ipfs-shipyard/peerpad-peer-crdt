@@ -8,6 +8,7 @@
     "peer-crdt": "^0.8.2",
     "peer-crdt-ipfs": "^0.4.0",
     "peer-crdt-pad": "ipfs-shipyard/peer-crdt-textarea-binding",
+    "peer-identity": "file:../peer-identity",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-emotion": "^9.2.4",

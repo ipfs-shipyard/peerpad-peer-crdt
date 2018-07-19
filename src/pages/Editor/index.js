@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Flex, Box } from 'grid-styled'
-import XIPFS from 'ipfs'
 import PeerCRDT from 'peer-crdt'
 import { Input, Textarea, Container } from 'rebass'
 import PeerCRDTIPFS from 'peer-crdt-ipfs'
@@ -34,19 +33,7 @@ class Editor extends Component {
       ]
     }
 
-    const ipfs = new XIPFS({
-      EXPERIMENTAL: {
-        pubsub: true
-      },
-      config: {
-        Addresses: {
-          Swarm: ['/dns4/protocol.andyet.net/tcp/9090/ws/p2p-websocket-star']
-        },
-        Bootstrap: []
-      }
-    })
-
-    const crdtipfs = PeerCRDTIPFS(ipfs)
+    const crdtipfs = PeerCRDTIPFS(this.props.ipfs)
     const writeKey = props.match.params.writeKey
     const readKey = props.match.params.readKey
     this.crypto = new Crypto(readKey, writeKey)
@@ -55,6 +42,10 @@ class Editor extends Component {
       ...crdtipfs,
       signAndEncrypt: this.crypto.encrypt.bind(this.crypto),
       decryptAndVerify: this.crypto.decrypt.bind(this.crypto)
+    })
+
+    this._crdt2 = PeerCRDT.defaults({
+      ...crdtipfs
     })
 
     this.start(props.match.params)
@@ -80,6 +71,8 @@ class Editor extends Component {
   start = ({ uuid }) => {
     this.stop()
     this._data = this._crdt.create('treedoc-text', uuid)
+    this._sessions = this._crdt2.create('lww-register', `${uuid}-sessions`)
+    this._meta = this._crdt2.create('lww-register', `${uuid}-meta`)
     window.data = this._data
 
     this._data.network.start().then(() => {
@@ -124,7 +117,7 @@ class Editor extends Component {
             style={{ display: writeKey ? 'block' : 'none' }}
           >
             <Textarea
-              ref={(c) => (this._textarea = c)}
+              innerRef={(c) => (this._textarea = c)}
               style={{ height: '80vh' }}
             />
           </Box>

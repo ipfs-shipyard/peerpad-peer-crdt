@@ -27,15 +27,32 @@ class App extends Component {
         Bootstrap: []
       }
     })
+
+    this.state = {
+      attestation: null,
+      sessionId: null
+    }
+  }
+
+  handleAttestation(attestation) {
+    this.setState({ attestation })
+  }
+
+  handleSession(sessionId) {
+    this.setState( { sessionId })
   }
 
   render() {
     return (
-      <Provider theme="crap">
+      <Provider>
         <Router>
           <Flex flexWrap="wrap">
             <Box width={1}>
-              <Header peerId={this.peerId} />
+              <Header
+                peerId={this.peerId}
+                handleAttestation={this.handleAttestation.bind(this)}
+                handleSession={this.handleSession.bind(this)}
+              />
             </Box>
             <Box px={2} width={1}>
               <Route
@@ -43,19 +60,36 @@ class App extends Component {
                 path="/"
                 ipfs={this.ipfs}
                 peerId={this.peerId}
-                render={(props) => <Home ipfs={this.ipfs} peerId={this.peerId} />}
+                render={(props) => (
+                  <Home
+                    ipfs={this.ipfs}
+                    peerId={this.peerId}
+                    attestation={this.state.attestation}
+                  />
+                )}
               />
               <Route
                 path="/editor/:uuid/:readKey/:writeKey"
                 ipfs={this.ipfs}
                 peerId={this.peerId}
-                render={(props) => <Editor {...props} ipfs={this.ipfs} peerId={this.peerId} />}
+                render={(props) => (
+                  <Editor
+                    {...props}
+                    ipfs={this.ipfs}
+                    peerId={this.peerId}
+                    sessionId={this.state.sessionId}
+                    attestation={this.state.attestation}
+                  />
+                )}
               />
               <Route
                 path="/readonly/:uuid/:readKey"
                 ipfs={this.ipfs}
                 peerId={this.peerId}
-                render={(props) => <Editor {...props} ipfs={this.ipfs} peerId={this.peerId} />}
+                sessionId={this.state.sessionId}
+                render={(props) => (
+                  <Editor {...props} ipfs={this.ipfs} peerId={this.peerId} />
+                )}
               />
             </Box>
           </Flex>

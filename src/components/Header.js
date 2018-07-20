@@ -28,7 +28,11 @@ class Header extends Component {
         <NavLink ml="auto" onClick={this.createNew}>
           Create Pad
         </NavLink>
-        <Login peerId={this.props.peerId} />
+        <Login
+          peerId={this.props.peerId}
+          handleAttestation={this.props.handleAttestation}
+          handleSession={this.props.handleSession}
+        />
       </Toolbar>
     )
   }

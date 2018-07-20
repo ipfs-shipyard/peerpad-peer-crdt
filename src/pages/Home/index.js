@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Heading, Container, Border } from 'rebass'
 import OAEP from '../../lib/oaep'
 import uuidv4 from 'uuid/v4'
+import PeerCRDTIPFS from 'peer-crdt-ipfs'
+import PeerCRDT from 'peer-crdt'
 
 const testDocuments = async (count) => {
   const res = []
@@ -23,12 +25,42 @@ class Home extends Component {
     super(props)
 
     this.state = {
-      documents: []
+      documents: [],
+      startRecents: false
+    }
+    this.crdtipfs = PeerCRDTIPFS(this.props.ipfs)
+    this._crdt = PeerCRDT.defaults({
+      ...this.crdtipfs,
+      signAndEncrypt: async (input) => {
+        return JSON.stringify(input)
+      },
+      decryptAndVerify: async (input) => {
+        input = new TextDecoder('utf-8').decode(input)
+        return JSON.parse(input)
+      }
+    })
+    this.recents = null
+  }
+
+  UNSAFE_componentWillReceiveProps(props, state) {
+    if (props.attestation !== null && !this.state.startRecents) {
+      this.setState({ startRecents: true })
+      this.recents = this._crdt.create('lww-set', `${props.attestation.user_id}-recents5`)
+      this.recents.on('change', () => {
+        const docs = []
+        const setRecents = this.recents.value()
+        for (let dstring of setRecents) {
+          const [uuid, privateKey, publicKey] = dstring.split('/')
+          docs.push({ uuid, privateKey, publicKey })
+        }
+        this.setState({ documents: docs })
+      })
+      this.recents.network.start()
     }
   }
 
   async componentDidMount() {
-    this.setState({ documents: await testDocuments(4) })
+    //this.setState({ documents: await testDocuments(4) })
   }
 
   render() {

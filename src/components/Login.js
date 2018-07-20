@@ -38,7 +38,10 @@ class Login extends React.Component {
           }`
         )
         const attestation = await res2.json()
+        attestation.name = userInfo.name
         this.setState({ attestation })
+        //critical, yo
+        this.props.handleAttestation(attestation)
       }
     })()
   }
@@ -65,6 +68,7 @@ class Login extends React.Component {
     } else if (state === 'generatedKeyPair') {
       this.setState({ keyGenerated: value })
     }
+    this.props.handleSession(this.props.peerId.session.id)
   }
 
   async handleAttest() {

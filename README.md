@@ -18,5 +18,5 @@ npm run build
 
 ## Login Service
 
-Follow the instructions on [dapp\_identity\_api](https://github.com/ipfs-shipyard/dapp_identity_api)
+Follow the instructions on [dapp\_identity\_api](https://github.com/ipfs-shipyard/dapp-identity-api).
 

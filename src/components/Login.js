@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toolbar, NavLink } from 'rebass'
+import { NavLink } from 'rebass'
 
 class Login extends React.Component {
   constructor(props) {

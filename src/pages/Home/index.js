@@ -1,24 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Heading, Container, Border } from 'rebass'
-import OAEP from '../../lib/oaep'
-import uuidv4 from 'uuid/v4'
 import PeerCRDTIPFS from 'peer-crdt-ipfs'
 import PeerCRDT from 'peer-crdt'
-
-const testDocuments = async (count) => {
-  const res = []
-
-  // eslint-disable-next-line no-unused-vars
-  for (const doc of [...Array(count)]) {
-    res.push({
-      uuid: uuidv4(),
-      ...(await OAEP.genKey())
-    })
-  }
-
-  return res
-}
 
 class Home extends Component {
   constructor(props) {

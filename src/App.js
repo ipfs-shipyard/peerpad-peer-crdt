@@ -7,8 +7,6 @@ import Header from './components/Header'
 import { Flex, Box } from 'grid-styled'
 import { Provider } from 'rebass'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import PeerCRDTIPFS from 'peer-crdt-ipfs'
-import PeerCRDT from 'peer-crdt'
 
 class App extends Component {
   constructor(props) {

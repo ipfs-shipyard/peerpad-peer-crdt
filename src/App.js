@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   handleSession(sessionId) {
-    this.setState( { sessionId })
+    this.setState({ sessionId })
   }
 
   render() {
@@ -62,6 +62,7 @@ class App extends Component {
                 peerId={this.peerId}
                 render={(props) => (
                   <Home
+                    {...props}
                     ipfs={this.ipfs}
                     peerId={this.peerId}
                     attestation={this.state.attestation}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Toolbar, NavLink } from 'rebass'
 
 class Login extends React.Component {
   constructor(props) {
@@ -73,19 +74,22 @@ class Login extends React.Component {
   }
 
   async handleAttest() {
-
     const { proof, did } = await this.props.peerId.exportProof()
     this.setState({ url: `http://localhost:8001/pltest@test.com/${did.id}` })
     console.log('proof', proof)
     window.localStorage.setItem('attestSent', true)
-    window.location = 'http://localhost:8001/sign2?proof=' + proof + '&next=' + encodeURI('http://localhost:3000')
+    window.location =
+      'http://localhost:8001/sign2?proof=' +
+      proof +
+      '&next=' +
+      encodeURI('http://localhost:3000')
   }
 
   render() {
     if (this.state.attestSent && this.state.selfVerified) {
-      return <div>{this.state.userInfo.name}</div>;
+      return <NavLink>{this.state.userInfo.name}</NavLink>
     } else {
-      return <div><button onClick={this.handleAttest.bind(this)}>Login</button></div>;
+      return <NavLink onClick={this.handleAttest.bind(this)}>Login</NavLink>
     }
   }
 }

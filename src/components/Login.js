@@ -29,17 +29,18 @@ class Login extends React.Component {
     })()
     ;(async () => {
       if (this.state.attestSent && !this.attestReceived) {
-        const res = await fetch('http://localhost:8001/user')
-        const userInfo = await res.json()
-        this.setState({ userInfo })
+        //TODO put tries around this
         const res2 = await fetch(
-          `http://localhost:8001/proof/${this.state.userInfo.id}/${
-            this.props.peerId.session.id
-          }`
+          `http://localhost:8001/proof2/${this.props.peerId.session.id}`
         )
         const attestation = await res2.json()
+        const res = await fetch(
+          `http://localhost:8001/user?id=${attestation.user_id}`
+        )
+        const userInfo = await res.json()
         attestation.name = userInfo.name
-        this.setState({ attestation })
+        attestation.email = userInfo.email
+        this.setState({ attestation, userInfo })
         //critical, yo
         this.props.handleAttestation(attestation)
       }

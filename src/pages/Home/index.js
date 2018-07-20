@@ -43,9 +43,20 @@ class Home extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(props, state) {
-    if (props.attestation !== null && !this.state.startRecents) {
+    this.start(props, state)
+  }
+
+  componentDidMount() {
+    this.start(this.props, this.state)
+  }
+
+  start = (props, state) => {
+    if (props.attestation !== null && !state.startRecents) {
       this.setState({ startRecents: true })
-      this.recents = this._crdt.create('lww-set', `${props.attestation.user_id}-recents5`)
+      this.recents = this._crdt.create(
+        'lww-set',
+        `${props.attestation.user_id}-recents5`
+      )
       this.recents.on('change', () => {
         const docs = []
         const setRecents = this.recents.value()
@@ -57,10 +68,6 @@ class Home extends Component {
       })
       this.recents.network.start()
     }
-  }
-
-  async componentDidMount() {
-    //this.setState({ documents: await testDocuments(4) })
   }
 
   render() {

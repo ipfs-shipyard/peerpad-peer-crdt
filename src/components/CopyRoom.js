@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import { Button, Input } from 'rebass'
 import Tooltip from './Tooltip'
+import { APP_URL } from '../lib/config'
 
 class CopyRoom extends Component {
   copy(input) {
@@ -17,47 +19,49 @@ class CopyRoom extends Component {
     const { readKey, writeKey, uuid } = this.props
     return (
       <Tooltip
-        target={<button>URLs</button>}
+        target={<Button ml={2}>URLs</Button>}
         overlay={{
-          placement: 'left'
+          placement: 'bottom'
         }}
       >
         <div style={{ width: 200 }}>
           {readKey && (
             <div>
               <label htmlFor="readKeyInput">
-                Read only link{' '}
-                <input
+                Read only link
+                <Input
                   id="readKeyInput"
-                  value={`${
-                    window.location.origin
-                  }/readonly/${uuid}/${readKey}`}
+                  value={`${APP_URL}/readonly/${uuid}/${readKey}`}
                   readOnly
-                  ref={(c) => (this._readKeyInput = c)}
+                  innerRef={(c) => (this._readKeyInput = c)}
                 />
               </label>
 
-              <button onClick={() => this.copy(this._readKeyInput)}>
+              <Button
+                style={{ display: 'block', width: '100%' }}
+                onClick={() => this.copy(this._readKeyInput)}
+              >
                 Copy
-              </button>
+              </Button>
             </div>
           )}
           {writeKey && (
-            <div>
+            <div style={{ marginTop: 8 }}>
               <label htmlFor="writeKeyInput">
                 Writeable link
-                <input
+                <Input
                   id="writeKeyInput"
-                  value={`${
-                    window.location.origin
-                  }/editor/${uuid}/${readKey}/${writeKey}`}
+                  value={`${APP_URL}/editor/${uuid}/${readKey}/${writeKey}`}
                   readOnly
-                  ref={(c) => (this._writeKeyInput = c)}
+                  innerRef={(c) => (this._writeKeyInput = c)}
                 />
               </label>
-              <button onClick={() => this.copy(this._writeKeyInput)}>
+              <Button
+                style={{ display: 'block', width: '100%' }}
+                onClick={() => this.copy(this._writeKeyInput)}
+              >
                 Copy
-              </button>
+              </Button>
             </div>
           )}
         </div>

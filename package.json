@@ -10,6 +10,7 @@
     "peer-crdt-pad": "ipfs-shipyard/peer-crdt-textarea-binding",
     "peer-identity": "^1.0.1",
     "react": "^16.4.1",
+    "react-click-outside": "^3.0.1",
     "react-dom": "^16.4.1",
     "react-emotion": "^9.2.4",
     "react-overlays": "^0.8.3",

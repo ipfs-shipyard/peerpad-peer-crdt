@@ -9,12 +9,18 @@ class Peers extends Component {
     return (
       <Flex>
         {peers.map((peer) => (
-          <Box key={peer.id} mx={1}>
+          <Box key={peer.id} ml={2}>
             <Tooltip
               overlay={{
                 placement: 'bottom'
               }}
-              target={<Avatar size={32} src={peer.avatar} />}
+              target={
+                <Avatar
+                  size={32}
+                  src={peer.avatar}
+                  style={{ display: 'block' }}
+                />
+              }
             >
               {peer.username}
               {!peer.confirmed && ' (unconfirmed)'}

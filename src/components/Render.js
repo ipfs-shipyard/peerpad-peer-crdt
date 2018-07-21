@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Border } from 'rebass'
 import Showdown from 'showdown'
 
 class Render extends Component {
@@ -8,12 +9,15 @@ class Render extends Component {
   }
 
   render() {
+    const { children, ...rest } = this.props
     return (
-      <div
-        dangerouslySetInnerHTML={{
-          __html: this._converter.makeHtml(this.props.children)
-        }}
-      />
+      <Border {...rest}>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: this._converter.makeHtml(children)
+          }}
+        />
+      </Border>
     )
   }
 }

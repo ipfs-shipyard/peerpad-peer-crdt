@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Overlay } from 'react-overlays'
+import enhanceWithClickOutside from 'react-click-outside'
 
 const TooltipStyle = {
   position: 'absolute',
@@ -10,9 +11,9 @@ const TooltipInnerStyle = {
   padding: '3px 8px',
   color: '#fff',
   textAlign: 'center',
-  borderRadius: 3,
+  borderRadius: 4,
   backgroundColor: '#000',
-  opacity: 0.75
+  opacity: 1
 }
 
 const TooltipArrowStyle = {
@@ -24,7 +25,7 @@ const TooltipArrowStyle = {
   borderTopColor: 'transparent',
   borderBottomColor: 'transparent',
   borderStyle: 'solid',
-  opacity: 0.75
+  opacity: 1
 }
 
 const PlacementStyles = {
@@ -67,9 +68,9 @@ const PlacementStyles = {
 }
 
 const ToolTip = (props) => {
-  let placementStyle = PlacementStyles[props.placement]
+  const placementStyle = PlacementStyles[props.placement]
 
-  let {
+  const {
     style,
     arrowOffsetLeft: left = placementStyle.arrow.left,
     arrowOffsetTop: top = placementStyle.arrow.top,
@@ -86,7 +87,7 @@ const ToolTip = (props) => {
   )
 }
 
-class PadInfo extends Component {
+class TooltipContainer extends Component {
   constructor(props) {
     super(props)
 
@@ -99,6 +100,10 @@ class PadInfo extends Component {
     this.setState(({ show }) => ({ show: !show }))
   }
 
+  handleClickOutside = () => {
+    this.setState({ show: false })
+  }
+
   render() {
     return (
       <div style={{ position: 'relative' }}>
@@ -107,6 +112,7 @@ class PadInfo extends Component {
           onClick={this.toggle}
           onKeyDown={this.toggle}
           role="button"
+          style={{ outline: 0 }}
           tabIndex={0}
         >
           {this.props.target}
@@ -126,4 +132,4 @@ class PadInfo extends Component {
   }
 }
 
-export default PadInfo
+export default enhanceWithClickOutside(TooltipContainer)

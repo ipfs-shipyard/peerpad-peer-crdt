@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'rebass'
+import { API_URL, APP_URL } from '../lib/config'
 
 class Login extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class Login extends React.Component {
     this.props.peerId.handleState(this.handlePIState.bind(this))
     ;(async () => {
       await this.props.peerId.loadOrCreate()
-      const res = await fetch('http://localhost:8001/jwk')
+      const res = await fetch(`${API_URL}/jwk`)
       const jwk = await res.json()
       await this.props.peerId.setPeer('server', jwk)
       this.setState({ serverKeyReceived: true })
@@ -32,12 +33,10 @@ class Login extends React.Component {
       if (this.state.attestSent && !this.attestReceived) {
         //TODO put tries around this
         const res2 = await fetch(
-          `http://localhost:8001/proof2/${this.props.peerId.session.id}`
+          `${API_URL}/proof2/${this.props.peerId.session.id}`
         )
         const attestation = await res2.json()
-        const res = await fetch(
-          `http://localhost:8001/user?id=${attestation.user_id}`
-        )
+        const res = await fetch(`${API_URL}/user?id=${attestation.user_id}`)
         const userInfo = await res.json()
         attestation.name = userInfo.name
         attestation.email = userInfo.email
@@ -48,7 +47,7 @@ class Login extends React.Component {
     })()
   }
 
-  componentWillUpdate(props, state) {
+  UNSAFE_componentWillUpdate(props, state) {
     if (
       !state.selfVerified &&
       !state.checkSelfAttestation &&
@@ -75,14 +74,11 @@ class Login extends React.Component {
 
   async handleAttest() {
     const { proof, did } = await this.props.peerId.exportProof()
-    this.setState({ url: `http://localhost:8001/pltest@test.com/${did.id}` })
-    console.log('proof', proof)
+    this.setState({ url: `${API_URL}/pltest@test.com/${did.id}` })
     window.localStorage.setItem('attestSent', true)
-    window.location =
-      'http://localhost:8001/sign2?proof=' +
-      proof +
-      '&next=' +
-      encodeURI('http://localhost:3000')
+    window.location = `${API_URL}/sign2?proof=${proof}&next=${encodeURI(
+      APP_URL
+    )}`
   }
 
   render() {

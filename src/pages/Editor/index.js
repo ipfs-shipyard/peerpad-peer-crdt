@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Flex, Box } from 'grid-styled'
 import PeerCRDT from 'peer-crdt'
-import { Input, Textarea, Container } from 'rebass'
+import { Textarea, Container } from 'rebass'
 import PeerCRDTIPFS from 'peer-crdt-ipfs'
 import Crypto from '../../lib/crypto'
 import TextareaBinding from 'peer-crdt-pad'
@@ -15,24 +15,7 @@ class Editor extends Component {
 
     this.state = {
       output: '',
-      peers: [
-        /*
-        {
-          id: 1,
-          avatar:
-            'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&q=75',
-          confirmed: true,
-          username: 'Test'
-        },
-        {
-          id: 2,
-          avatar:
-            'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=200&q=75',
-          confirmed: false,
-          username: 'Test2'
-        }
-        */
-      ],
+      peers: [],
       sessionNetworkStart: false,
       addedSession: false,
       addedAttestation: false
@@ -79,28 +62,40 @@ class Editor extends Component {
         `${nextProps.attestation.user_id}-recents5`
       )
       this.recents.network.start().then(() => {
-        const params = `${this.props.match.params.uuid}/${this.props.match.params.readKey}/${
-          this.props.match.params.writeKey
-        }`
+        const params = `${this.props.match.params.uuid}/${
+          this.props.match.params.readKey
+        }/${this.props.match.params.writeKey}`
         this.recents.add(params)
       })
     }
   }
 
   UNSAFE_componentWillUpdate(props, state) {
-    if (props.sessionId !== null && state.sessionNetworkStart && !state.addedSession) {
-      const sessions = this._sessions.value();
+    if (
+      props.sessionId !== null &&
+      state.sessionNetworkStart &&
+      !state.addedSession
+    ) {
+      const sessions = this._sessions.value()
       this.setState({ addedSession: true })
-      if (!sessions.hasOwnProperty(this.props.sessionId) || (props.attestation !== null && sessions[this.props.sessionId].attestation === null)) {
-        this._sessions.set(this.props.sessionId, { attestation: props.attestation })
+      if (
+        !sessions.hasOwnProperty(this.props.sessionId) ||
+        (props.attestation !== null &&
+          sessions[this.props.sessionId].attestation === null)
+      ) {
+        this._sessions.set(this.props.sessionId, {
+          attestation: props.attestation
+        })
       }
       if (props.attestation !== null) {
-        this.setState({ addedAttestation: true });
+        this.setState({ addedAttestation: true })
       }
     }
     if (props.attestation !== null && !this.state.addedAttestation) {
-      this._sessions.set(this.props.sessionId, { attestation: props.attestation })
-      this.setState({ addedAttestation: true });
+      this._sessions.set(this.props.sessionId, {
+        attestation: props.attestation
+      })
+      this.setState({ addedAttestation: true })
     }
   }
 
@@ -131,7 +126,10 @@ class Editor extends Component {
           peerObj = {}
         }
         peerObj.id = sessionId
-        if (session.hasOwnProperty('attestation') && session.attestation !== null) {
+        if (
+          session.hasOwnProperty('attestation') &&
+          session.attestation !== null
+        ) {
           peerObj.user_id = session.attestation.user_id
           peerObj.username = session.attestation.name
         } else {
@@ -179,27 +177,28 @@ class Editor extends Component {
     const { writeKey } = params
     return (
       <Container>
-        <Flex px={2} pt={4}>
-          <Box flex="1 1 auto" mr={4}>
-            <Input defaultValue="Pad Title" />
-          </Box>
+        <Flex py={2}>
           <Box ml="auto">
             <PadInfo {...params} peers={this.state.peers} />
           </Box>
         </Flex>
         <Flex className="Editor">
-          <Box
-            flex="1 1 auto"
-            p={2}
-            style={{ display: writeKey ? 'block' : 'none' }}
-          >
+          <Box width={1 / 2} style={{ display: writeKey ? 'block' : 'none' }}>
             <Textarea
+              p={1}
+              borderRadius={0}
               innerRef={(c) => (this._textarea = c)}
-              style={{ height: '80vh' }}
+              style={{
+                height: 'calc(100vh - 103px)',
+                resize: 'none',
+                padding: 8
+              }}
             />
           </Box>
-          <Box flex="1 1 auto" p={2}>
-            <Render>{this.state.output}</Render>
+          <Box width={writeKey ? 1 / 2 : 1}>
+            <Render p={2} style={{ height: 'calc(100vh - 103px)' }}>
+              {this.state.output}
+            </Render>
           </Box>
         </Flex>
       </Container>
